@@ -1,0 +1,22 @@
+; Engine configuration file.
+; It's best edited using the editor and not directly.
+config_version=5
+
+[application]
+config/name="Echo Wars"
+run/main_scene="res://scenes/arena/arena.tscn"
+config/features=PackedStringArray("4.6")
+config/icon="res://icon.svg"
+
+[display]
+window/size/viewport_width=1080
+window/size/viewport_height=1920
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[autoload]
+GameState="*res://scripts/autoloads/game_state.gd"
+ResonanceManager="*res://scripts/autoloads/resonance_manager.gd"
+CardManager="*res://scripts/autoloads/card_manager.gd"
+AuraManager="*res://scripts/autoloads/aura_manager.gd"
+ConversionManager="*res://scripts/autoloads/conversion_manager.gd"
