@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://b0vkmwlw1ckqt"]
+
+[node name="veilanchor" type="Node2D" unique_id=1674331628]
+position = Vector2(64, 64)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=251221256]
+custom_minimum_size = Vector2(32, -32)
+offset_right = 64.0
+offset_bottom = 64.0

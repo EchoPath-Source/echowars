@@ -1,0 +1,37 @@
+; Engine configuration file.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
+
+config_version=5
+
+[application]
+
+config/name="EchoWars"
+run/main_scene="uid://cckx12cgeqy1j"
+config/features=PackedStringArray("4.6", "Mobile")
+
+[autoload]
+
+GameState="*uid://cytkh5b1n1k15"
+ResonanceManager="*uid://b0bves7q42mv2"
+CardManager="*uid://ibm676ipk3x4"
+AuraManager="*uid://bmarhcyb2gd2y"
+ConversionManager="*uid://dx4y2j0ri5b45"
+QrrgField="*uid://cr0n40b5hvnjl"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/ai_coding_assistant/plugin.cfg")
+
+[physics]
+
+3d/physics_engine="Jolt Physics"
+
+[rendering]
+
+rendering_device/driver.windows="d3d12"
+renderer/rendering_method="mobile"

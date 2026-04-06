@@ -1,0 +1,99 @@
+[gd_scene format=3 uid="uid://cckx12cgeqy1j"]
+
+[ext_resource type="Script" uid="uid://ltmqmvq7qqkk" path="res://scripts/arena/arena.gd" id="1_h0wof"]
+[ext_resource type="Script" uid="uid://c0v748fnuqt71" path="res://Lane manager.gd" id="1_ubfh8"]
+[ext_resource type="PackedScene" uid="uid://b0vkmwlw1ckqt" path="res://veilanchor.tscn" id="2_444vf"]
+[ext_resource type="Script" uid="uid://dnjx8wdw5uuwo" path="res://scripts/ui/match_hud.gd" id="4_fu4bq"]
+
+[sub_resource type="GDScript" id="GDScript_444vf"]
+resource_name = "timer_label.gd"
+script/source = "extends Label
+
+func _process(_delta):
+		# Access your Autoload directly to update the text
+			text = str(snapped(GameState.time_remaining, 0.1))
+			
+"
+
+[node name="Node2D" type="Node2D" unique_id=3820724]
+script = ExtResource("1_h0wof")
+metadata/_edit_vertical_guides_ = [-990.0, -397.0, 155.0]
+
+[node name="lanemanager" type="Node2D" parent="." unique_id=1118108819]
+script = ExtResource("1_ubfh8")
+
+[node name="playergroup" type="Node2D" parent="lanemanager" unique_id=1613852669]
+
+[node name="playerfield" parent="lanemanager/playergroup" unique_id=1916328548 instance=ExtResource("2_444vf")]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(500, 1632)
+
+[node name="playercenter" parent="lanemanager/playergroup" unique_id=1364928419 instance=ExtResource("2_444vf")]
+modulate = Color(1, 0, 1, 1)
+position = Vector2(350, 1632)
+
+[node name="playerveil" parent="lanemanager/playergroup" unique_id=1674331628 instance=ExtResource("2_444vf")]
+modulate = Color(1, 0.23529412, 1, 1)
+position = Vector2(200, 1632)
+
+[node name="enemygroup" type="Node2D" parent="lanemanager" unique_id=1086192602]
+
+[node name="enemyfeild" parent="lanemanager/enemygroup" unique_id=1230804900 instance=ExtResource("2_444vf")]
+modulate = Color(0.9411765, 0.07450981, 0, 1)
+position = Vector2(500, 288)
+
+[node name="enemyveil" parent="lanemanager/enemygroup" unique_id=980866844 instance=ExtResource("2_444vf")]
+modulate = Color(0.7411765, 0.043137256, 0, 1)
+position = Vector2(200, 288)
+
+[node name="enemycenter" parent="lanemanager/enemygroup" unique_id=1084381553 instance=ExtResource("2_444vf")]
+modulate = Color(0.9372549, 0, 0, 1)
+position = Vector2(350, 288)
+
+[node name="matchhud" type="CanvasLayer" parent="." unique_id=2013086539]
+script = ExtResource("4_fu4bq")
+
+[node name="HUDRoot" type="Control" parent="matchhud" unique_id=659085538]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="matchhud/HUDRoot" unique_id=739661821]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 50.0
+alignment = 1
+
+[node name="TimerLabel" type="Label" parent="matchhud/HUDRoot/VBoxContainer" unique_id=859065414]
+layout_mode = 2
+text = "90.0"
+script = SubResource("GDScript_444vf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="matchhud/HUDRoot/VBoxContainer" unique_id=409293398]
+layout_mode = 2
+
+[node name="PlayerCrowns" type="Label" parent="matchhud/HUDRoot/VBoxContainer/HBoxContainer" unique_id=1582867746]
+layout_mode = 2
+
+[node name="EnemyCrowns" type="Label" parent="matchhud/HUDRoot/VBoxContainer/HBoxContainer" unique_id=1399226903]
+layout_mode = 2
+
+[node name="WinScreen" type="Panel" parent="matchhud/HUDRoot" unique_id=1835859154]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 167.0
+offset_top = 620.0
+offset_right = 167.0
+offset_bottom = 620.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinLabel" type="Label" parent="matchhud/HUDRoot/WinScreen" unique_id=174569210]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
