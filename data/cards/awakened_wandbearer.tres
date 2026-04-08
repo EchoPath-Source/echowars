@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2]
+
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="1_card_data"]
+
+[resource]
+script = ExtResource("1_card_data")
+card_id = "awakened_wandbearer"
+card_name = "Wandbearer of Echo"
+faction = "awakened_ones"
+card_type = "unit"
+description = "Support unit. Passive regen boost to nearby allies within 120px."
+resonance_cost = 2
+hp = 240.0
+damage = 80.0
+speed = 80.0
+jitter = 0.05
+path_directness = 0.85
+hesitation_rate = 0.1
+momentum_decay = 0.15
