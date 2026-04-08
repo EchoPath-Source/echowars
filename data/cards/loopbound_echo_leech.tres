@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2]
+
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="1_card_data"]
+
+[resource]
+script = ExtResource("1_card_data")
+card_id = "echo_leech"
+card_name = "Echo Leech"
+faction = "loopbound"
+card_type = "unit"
+description = "Swarm unit. Drains 5 Resonance from player on hit. Spawns x3."
+resonance_cost = 2
+hp = 120.0
+damage = 60.0
+speed = 110.0
+jitter = 0.9
+path_directness = 0.3
+hesitation_rate = 0.4
+momentum_decay = 0.05
