@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2]
+
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="1_card_data"]
+
+[resource]
+script = ExtResource("1_card_data")
+card_id = "collapse_scribe"
+card_name = "Collapse Scribe"
+faction = "architects"
+card_type = "unit"
+description = "Control unit. Attacks slow target movement by 40 percent."
+resonance_cost = 4
+hp = 350.0
+damage = 130.0
+speed = 70.0
+jitter = 0.1
+path_directness = 0.6
+hesitation_rate = 0.25
+momentum_decay = 0.5
