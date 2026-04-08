@@ -1,0 +1,19 @@
+[gd_resource type="Resource" load_steps=2]
+
+[ext_resource type="Script" path="res://scripts/data/card_data.gd" id="1_card_data"]
+
+[resource]
+script = ExtResource("1_card_data")
+card_id = "flamebearer"
+card_name = "Flamebearer"
+faction = "forgotten_flame"
+card_type = "unit"
+description = "Aggro unit. Charges forward. Cannot be slowed. First hit deals 1.5x damage."
+resonance_cost = 3
+hp = 280.0
+damage = 140.0
+speed = 110.0
+jitter = 0.3
+path_directness = 0.95
+hesitation_rate = 0.0
+momentum_decay = 0.7
