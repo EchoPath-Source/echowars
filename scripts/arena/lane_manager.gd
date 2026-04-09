@@ -1,6 +1,8 @@
 extends Node2D
 
 signal center_captured(team: String)
+signal center_contested()
+signal center_neutralized()
 
 enum Lane { VEIL, CENTER_NODE, FIELD }
 
@@ -42,17 +44,24 @@ func _setup_center_node() -> void:
 	center_node_area.body_entered.connect(_on_center_entered)
 
 func _on_center_entered(body: Node) -> void:
-	if not body.has_method("is_player_owned"):
+	if not body.has_method("get"):
 		return
 
-	var team := "player" if body.is_player_owned else "enemy"
+	var is_player_owned = body.get("is_player_owned")
+	if typeof(is_player_owned) != TYPE_BOOL:
+		return
+
+	var team := "player" if is_player_owned else "enemy"
+
 	if team == center_controller:
 		return
 
 	center_controller = team
 	center_captured.emit(team)
 
-	if has_node("/root/QRRGField"):
+	if has_node("/root/QrrgField"):
+		get_node("/root/QrrgField").apply_center_boost(team)
+	elif has_node("/root/QRRGField"):
 		get_node("/root/QRRGField").apply_center_boost(team)
 
 func get_lane_x(lane: Lane) -> float:
@@ -77,17 +86,24 @@ func get_center_node_pos() -> Vector2:
 func get_center_node_radius() -> float:
 	return CENTER_NODE_RADIUS
 
-func get_king_anchor_pos(is_player_target: bool) -> Vector2:
+func get_king_anchor_pos(target_enemy_side: bool) -> Vector2:
 	return Vector2(
 		CENTER_X,
-		ENEMY_KING_Y if is_player_target else PLAYER_KING_Y
+		ENEMY_KING_Y if target_enemy_side else PLAYER_KING_Y
 	)
 
 func get_macro_route_points(lane: Lane, is_player: bool) -> Array[Vector2]:
 	var route: Array[Vector2] = []
+
+	# Spawn in the chosen side lane or temporary center deploy zone
 	route.append(get_spawn_pos(lane, is_player))
+
+	# Converge through center node region
 	route.append(CENTER_NODE_POS)
+
+	# Then continue toward the opposing king anchor
 	route.append(get_king_anchor_pos(is_player))
+
 	return route
 
 func get_lane_from_screen_pos(screen_x: float) -> Lane:
