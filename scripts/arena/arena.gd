@@ -1,4 +1,4 @@
 extends Node2D
 
 func _ready() -> void:
-		GameState.start_match()
+	GameState.start_match()
