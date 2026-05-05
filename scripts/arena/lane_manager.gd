@@ -1,4 +1,5 @@
 extends Node2D
+class_name LaneManager
 
 signal center_captured(team: String)
 signal center_contested()
