@@ -31,8 +31,17 @@ func _on_drag_started(index: int, card_ui: Control) -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventScreenDrag and dragging_card:
 		dragging_card.global_position = event.position - dragging_card.size * 0.5
+	if event is InputEventMouseMotion and dragging_card:
+		dragging_card.global_position = event.position - dragging_card.size * 0.5
 
 	if event is InputEventScreenTouch and not event.pressed:
+		if drag_origin_index >= 0:
+			_try_deploy(event.position)
+
+		dragging_card = null
+		drag_origin_index = -1
+
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
 		if drag_origin_index >= 0:
 			_try_deploy(event.position)
 
