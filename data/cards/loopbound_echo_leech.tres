@@ -1,6 +1,7 @@
-[gd_resource type="Resource" load_steps=2]
+[gd_resource type="Resource" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/data/card_data.gd" id="1_card_data"]
+[ext_resource type="PackedScene" path="res://scenes/units/base_unit.tscn" id="2_base_unit"]
 
 [resource]
 script = ExtResource("1_card_data")
@@ -8,11 +9,12 @@ card_id = "echo_leech"
 card_name = "Echo Leech"
 faction = "loopbound"
 card_type = "unit"
-description = "Swarm unit. Drains 5 Resonance from player on hit. Spawns x3."
+description = "Swarm unit. Drains 5 Resonance from player on hit. Spawns x3 later."
 resonance_cost = 2
 hp = 120.0
 damage = 60.0
 speed = 110.0
+unit_scene = ExtResource("2_base_unit")
 jitter = 0.9
 path_directness = 0.3
 hesitation_rate = 0.4
