@@ -6,6 +6,14 @@ signal drag_started
 @onready var name_label = $CardNameLabel
 @onready var faction_block = $FactionColorBlock
 
+func _ready() -> void:
+	# The root CardUI should receive the press event; visual children should not swallow it.
+	mouse_filter = Control.MOUSE_FILTER_STOP
+	$Background.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$CostLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$CardNameLabel.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$FactionColorBlock.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 func setup(card, index: int) -> void:
 	cost_label.text = str(card.resonance_cost)
 	name_label.text = _shorten_name(card.card_name)
@@ -29,4 +37,6 @@ func _shorten_name(card_name: String) -> String:
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventScreenTouch and event.pressed:
+		drag_started.emit()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		drag_started.emit()
