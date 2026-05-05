@@ -2,6 +2,8 @@ extends Control
 
 @export var card_ui_scene: PackedScene
 
+const LaneManagerScript = preload("res://scripts/arena/lane_manager.gd")
+
 var dragging_card: Control = null
 var drag_origin_index: int = -1
 
@@ -27,30 +29,37 @@ func _on_hand_updated(hand) -> void:
 func _on_drag_started(index: int, card_ui: Control) -> void:
 	drag_origin_index = index
 	dragging_card = card_ui
+	dragging_card.set_as_top_level(true)
+	dragging_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _input(event: InputEvent) -> void:
-	if event is InputEventScreenDrag and dragging_card:
-		dragging_card.global_position = event.position - dragging_card.size * 0.5
-	if event is InputEventMouseMotion and dragging_card:
-		dragging_card.global_position = event.position - dragging_card.size * 0.5
+	if dragging_card == null:
+		return
 
-	if event is InputEventScreenTouch and not event.pressed:
-		if drag_origin_index >= 0:
-			_try_deploy(event.position)
+	if event is InputEventScreenDrag:
+		_update_drag_position(event.position)
+	elif event is InputEventMouseMotion:
+		_update_drag_position(event.position)
+	elif event is InputEventScreenTouch and not event.pressed:
+		_try_deploy(event.position)
+		_end_drag()
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
+		_try_deploy(event.position)
+		_end_drag()
 
-		dragging_card = null
-		drag_origin_index = -1
-
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and not event.pressed:
-		if drag_origin_index >= 0:
-			_try_deploy(event.position)
-
-		dragging_card = null
-		drag_origin_index = -1
+func _update_drag_position(pointer_pos: Vector2) -> void:
+	dragging_card.global_position = pointer_pos - dragging_card.size * 0.5
 
 func _try_deploy(screen_pos: Vector2) -> void:
 	var lane := _get_lane_at_position(screen_pos)
 	CardManager.play_card(drag_origin_index, lane, screen_pos)
+
+func _end_drag() -> void:
+	if dragging_card:
+		dragging_card.set_as_top_level(false)
+		dragging_card.mouse_filter = Control.MOUSE_FILTER_STOP
+	dragging_card = null
+	drag_origin_index = -1
 
 func _get_lane_at_position(pos: Vector2) -> int:
 	# Prototype touch regions:
@@ -58,7 +67,7 @@ func _get_lane_at_position(pos: Vector2) -> int:
 	# center = Center Node zone
 	# right = Field Lane
 	if pos.x < 270.0:
-		return LaneManager.Lane.VEIL
+		return LaneManagerScript.Lane.VEIL
 	elif pos.x > 450.0:
-		return LaneManager.Lane.FIELD
-	return LaneManager.Lane.CENTER_NODE
+		return LaneManagerScript.Lane.FIELD
+	return LaneManagerScript.Lane.CENTER_NODE
