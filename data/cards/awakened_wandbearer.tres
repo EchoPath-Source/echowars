@@ -1,6 +1,7 @@
-[gd_resource type="Resource" load_steps=2]
+[gd_resource type="Resource" load_steps=3]
 
 [ext_resource type="Script" path="res://scripts/data/card_data.gd" id="1_card_data"]
+[ext_resource type="PackedScene" path="res://scenes/units/base_unit.tscn" id="2_base_unit"]
 
 [resource]
 script = ExtResource("1_card_data")
@@ -13,6 +14,7 @@ resonance_cost = 2
 hp = 240.0
 damage = 80.0
 speed = 80.0
+unit_scene = ExtResource("2_base_unit")
 jitter = 0.05
 path_directness = 0.85
 hesitation_rate = 0.1

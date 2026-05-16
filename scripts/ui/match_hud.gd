@@ -17,6 +17,7 @@ func _ready() -> void:
 	if has_node("HUDRoot/ResonanceBar"):
 		resonance_bar = $HUDRoot/ResonanceBar
 		ResonanceManager.resonance_changed.connect(_on_resonance_changed)
+		_on_resonance_changed(ResonanceManager.current_resonance, ResonanceManager.max_resonance)
 
 func _process(_delta: float) -> void:
 	if GameState.current_phase != GameState.Phase.ACTIVE \

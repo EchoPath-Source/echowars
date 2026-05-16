@@ -96,13 +96,13 @@ func get_king_anchor_pos(target_enemy_side: bool) -> Vector2:
 func get_macro_route_points(lane: Lane, is_player: bool) -> Array[Vector2]:
 	var route: Array[Vector2] = []
 
-	# Spawn in the chosen side lane or temporary center deploy zone
+	# Spawn in the chosen Veil/Field lane or temporary Center Node deploy zone.
 	route.append(get_spawn_pos(lane, is_player))
 
-	# Converge through center node region
+	# Converge through the Center Node control zone; it is not a normal third lane.
 	route.append(CENTER_NODE_POS)
 
-	# Then continue toward the opposing king anchor
+	# Then continue toward the opposing king anchor direction.
 	route.append(get_king_anchor_pos(is_player))
 
 	return route
