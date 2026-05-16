@@ -24,8 +24,11 @@ modulate = Color(1, 0, 1, 1)
 position = Vector2(540, 1700)
 
 [node name="playercenter" parent="lanemanager/playergroup" instance=ExtResource("3_anchor")]
-modulate = Color(1, 0, 1, 1)
+show_behind_parent = true
+z_index = -2
+modulate = Color(1, 0, 1, 0.35)
 position = Vector2(360, 1800)
+is_king_anchor = true
 
 [node name="playerveil" parent="lanemanager/playergroup" instance=ExtResource("3_anchor")]
 modulate = Color(1, 0.23529412, 1, 1)
@@ -36,14 +39,20 @@ position = Vector2(180, 1700)
 [node name="enemyfield" parent="lanemanager/enemygroup" instance=ExtResource("3_anchor")]
 modulate = Color(0.9411765, 0.07450981, 0, 1)
 position = Vector2(540, 220)
+is_player_anchor = false
 
 [node name="enemyveil" parent="lanemanager/enemygroup" instance=ExtResource("3_anchor")]
 modulate = Color(0.7411765, 0.043137256, 0, 1)
 position = Vector2(180, 220)
+is_player_anchor = false
 
 [node name="enemycenter" parent="lanemanager/enemygroup" instance=ExtResource("3_anchor")]
-modulate = Color(0.9372549, 0, 0, 1)
+show_behind_parent = true
+z_index = -2
+modulate = Color(0.9372549, 0, 0, 0.35)
 position = Vector2(360, 120)
+is_player_anchor = false
+is_king_anchor = true
 
 [node name="matchhud" type="CanvasLayer" parent="."]
 script = ExtResource("4_hud")

@@ -88,12 +88,18 @@ func _get_unit_route(lane: int, start_pos: Vector2, is_player: bool) -> Array[Ve
 	if manager != null and manager.has_method("get_macro_route_points"):
 		return manager.get_macro_route_points(lane, is_player, start_pos)
 
-	# Fallback route: Veil/Field pressure bends through the Center Node control zone,
-	# then redirects toward the enemy anchor direction. Center Node is not a normal lane.
+	# Fallback route: keep Center Node as a convergence zone, not a straight lane.
+	var enemy_y := LaneManagerScript.ENEMY_KING_Y if is_player else LaneManagerScript.PLAYER_KING_Y
+	var exit_y := LaneManagerScript.CENTER_NODE_POS.y - LaneManagerScript.PRESSURE_EXIT_OFFSET_Y if is_player else LaneManagerScript.CENTER_NODE_POS.y + LaneManagerScript.PRESSURE_EXIT_OFFSET_Y
+	var exit_x := LaneManagerScript.FIELD_X if lane == LaneManagerScript.Lane.VEIL else LaneManagerScript.VEIL_X
+	if lane == LaneManagerScript.Lane.CENTER_NODE:
+		exit_x = LaneManagerScript.FIELD_X if is_player else LaneManagerScript.VEIL_X
+
 	return [
 		start_pos,
 		LaneManagerScript.CENTER_NODE_POS,
-		Vector2(LaneManagerScript.CENTER_X, LaneManagerScript.ENEMY_KING_Y)
+		Vector2(exit_x, exit_y),
+		Vector2(LaneManagerScript.CENTER_X, enemy_y)
 	]
 
 func _get_lane_manager() -> Node:
