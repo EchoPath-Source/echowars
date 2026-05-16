@@ -85,3 +85,12 @@ The following systems should eventually reflect this correction:
 Use this rule going forward:
 
 **Echo Wars has three routing channels in implementation, but only two side lanes in design. The center channel is the Center Node: a contested convergence objective, not a generic third lane.**
+
+## Follow-up note: Center Node routing / geometry
+
+The current prototype now draws the Center Node as a foreground convergence zone and routes side pressure through it before peeling toward enemy-side pressure. This is still a small macro-route approximation, not the final Q-RRG movement solution.
+
+Remaining issue for the next pass:
+- Center Node deployment is still allowed for touch readability, but it should eventually become a special contest/capture interaction rather than a normal deploy lane.
+- The current route helper uses fixed rounded-X waypoints; later field logic should replace these with smoother, personality-aware curves so units braid through or near the node instead of snapping between macro points.
+- Side-lane exits currently cross from Veil pressure through Center Node toward Field-side enemy pressure, and vice versa. Validate in playtest whether this reads better than same-side exits before locking board geometry.
