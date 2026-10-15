@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Resonance Clash — Domain & Class Model v1.0 · 2026-10-11 · Intake interview output for Don's toolchain -->
+<model game="ResonanceClash" version="1.0">
+
+  <!-- ============ DOMAIN MODEL ============ -->
+  <domainmodel>
+    <entity name="Faction">
+      <attribute name="name" type="string"/>           <!-- Awakened Ones, Loopbound, Architects of Collapse, Forgotten Flame -->
+      <attribute name="law" type="string"/>            <!-- coherence / recursive erosion / designed fracture / return through ruin -->
+      <attribute name="primaryColor" type="color"/>    <!-- blue / purple / gold / ember-orange -->
+      <attribute name="secondaryColor" type="color"/>  <!-- white / obsidian / brown / red-black -->
+      <attribute name="tagline" type="string"/>
+      <attribute name="motif" type="audio"/>           <!-- chimes / reversed loops / brass pulses / war drums -->
+    </entity>
+
+    <entity name="Player">
+      <attribute name="resonance" type="float" min="0" max="10"/>
+      <attribute name="hand" type="Card[5]"/>
+      <attribute name="deck" type="Deck"/>
+      <attribute name="faction" type="Faction"/>
+      <relationship target="Anchor" kind="owns" cardinality="1"/>
+    </entity>
+
+    <entity name="Deck">
+      <attribute name="cards" type="Card[9..10]"/>
+      <rule>Contains base units + 1 hero + 1-2 spells + mid-tier troops</rule>
+    </entity>
+
+    <entity name="Card">
+      <attribute name="name" type="string"/>
+      <attribute name="cost" type="int" min="2" max="8"/>
+      <attribute name="faction" type="Faction"/>
+      <attribute name="kind" type="enum">troop, hero, spell</attribute>
+      <relationship target="Unit" kind="spawns" cardinality="0..1"/>
+    </entity>
+
+    <entity name="Unit">
+      <attribute name="hp" type="float"/>
+      <attribute name="maxHp" type="float"/>
+      <attribute name="damage" type="float"/>
+      <attribute name="speed" type="float"/>
+      <attribute name="lane" type="Lane"/>
+      <attribute name="state" type="enum">active, drifting, converted, ascended, dead</attribute>
+      <attribute name="survivalTime" type="float"/>
+      <attribute name="auraColor" type="color"/>
+      <relationship target="Ability" kind="has" cardinality="0..n"/>
+    </entity>
+
+    <entity name="Hero" extends="Unit">
+      <attribute name="signaturePower" type="string"/>
+    </entity>
+
+    <entity name="Ability">
+      <attribute name="name" type="string"/>
+      <attribute name="trigger" type="enum">onDeploy, onHit, onDeath, aura, periodic, onConvert</attribute>
+      <attribute name="effect" type="string"/>
+    </entity>
+
+    <entity name="Lane">
+      <attribute name="name" type="string"/>           <!-- Veil, Field -->
+      <attribute name="route" type="path"/>
+    </entity>
+
+    <entity name="CenterNode">
+      <attribute name="holder" type="Faction" nullable="true"/>
+      <attribute name="glowColor" type="color"/>
+    </entity>
+
+    <entity name="Anchor">
+      <attribute name="hp" type="float"/>
+      <attribute name="owner" type="Player"/>
+    </entity>
+
+    <entity name="Scroll">
+      <attribute name="rarity" type="enum">common, rare, epic, legendary</attribute>
+      <relationship target="Card" kind="reveals" cardinality="1"/>
+    </entity>
+
+    <entity name="Forge">
+      <attribute name="flameColor" type="color"/>
+      <description>Mythic lobby space: faction select, deck builder, collection, scroll opening, leveling</description>
+    </entity>
+
+    <entity name="Match">
+      <attribute name="duration" type="float" default="180"/>
+      <attribute name="overtime" type="float" default="60"/>
+      <relationship target="Player" kind="has" cardinality="2"/>
+    </entity>
+  </domainmodel>
+
+  <!-- ============ CLASS MODEL (code-facing) ============ -->
+  <classmethod>
+    <class name="AUnitActor">
+      <attribute name="CardData" type="CardDataRef"/>      <!-- Player[1].Card[n] data bound here -->
+      <attribute name="CurrentHP" type="float"/>
+      <attribute name="AuraColor" type="FLinearColor"/>
+      <attribute name="LaneId" type="int"/>
+      <method name="OnDeploy"/>
+      <method name="OnTakeDamage"/>
+      <method name="OnEnterDrift"/>
+      <method name="OnConvert(NewFaction)"/>
+      <method name="OnAscend"/>
+      <method name="OnDeath"/>
+    </class>
+
+    <class name="ACardActor">
+      <attribute name="CardData" type="CardDataRef"/>
+      <method name="Burn()"/>                            <!-- deploy visual -->
+      <method name="TearVeil(FactionColor)"/>             <!-- portal visual -->
+    </class>
+
+    <class name="ACenterNodeActor">
+      <attribute name="HolderFaction" type="FactionRef" nullable="true"/>
+      <method name="SetGlow(FLinearColor)"/>
+    </class>
+
+    <class name="AAnchorActor">
+      <method name="Shatter()"/>                         <!-- NOT building-collapse -->
+    </class>
+
+    <class name="UResonanceComponent">
+      <attribute name="Value" type="float" min="0" max="10"/>
+      <attribute name="RegenRate" type="float" default="1.0"/>
+    </class>
+
+    <class name="ASceneDirector">
+      <description>Drives presentation-layer choreography from screenplay data. Game logic stays data-side.</description>
+      <method name="PlayScene(SceneId)"/>
+      <method name="BindData(ActorRef, CardDataRef)"/>
+    </class>
+  </classmethod>
+
+</model>

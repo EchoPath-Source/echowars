@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Resonance Clash — Use Cases v1.0 · 2026-10-11 · Intake interview output for Don's toolchain (Sparx EA import) -->
+<usecases game="ResonanceClash" version="1.0">
+
+  <usecase id="UC-01" name="Start Match">
+    <actor>Player</actor>
+    <trigger>Player selects "Battle" from the Mythic Forge</trigger>
+    <precondition>Player has a faction selected and a valid 9-10 card deck</precondition>
+    <mainflow>
+      <step n="1">System displays Versus Intro scene: both faction sigils with taglines (~3s, skippable)</step>
+      <step n="2">System reveals Match Opening scene: overhead chromosome arena, both lanes, shimmering neutral center node</step>
+      <step n="3">System deals 5 cards to player's hand; Resonance set to starting value</step>
+      <step n="4">Match timer starts (3:00)</step>
+    </mainflow>
+    <postcondition>Match is live; both players can deploy</postcondition>
+  </usecase>
+
+  <usecase id="UC-02" name="Deploy Card">
+    <actor>Player</actor>
+    <trigger>Player drags a card from hand onto a lane</trigger>
+    <precondition>Player has enough Resonance; target is a valid lane (not the Center Node)</precondition>
+    <mainflow>
+      <step n="1">System burns the card visual on release</step>
+      <step n="2">System tears a veil-portal in the faction's neon color at the drop point</step>
+      <step n="3">Unit actor spawns through the portal within 1s; Player[1].Card[n] data binds to the actor</step>
+      <step n="4">Resonance is deducted; next card drawn to hand</step>
+    </mainflow>
+    <postcondition>Unit is live on the lane following its route</postcondition>
+  </usecase>
+
+  <usecase id="UC-03" name="Inspect Card">
+    <actor>Player</actor>
+    <trigger>Player hovers over a card in hand</trigger>
+    <mainflow>
+      <step n="1">System displays card detail: cost, HP, DMG, ability text</step>
+    </mainflow>
+    <postcondition>Player has full card information; no game state changes</postcondition>
+  </usecase>
+
+  <usecase id="UC-04" name="Conversion Flip">
+    <actor>System</actor>
+    <trigger>A unit enters Drift (below 20% HP) and a conversion effect applies</trigger>
+    <precondition>Target is convertible (not Ascended; not protected by Anchor-Line Enforcer)</precondition>
+    <mainflow>
+      <step n="1">System strikes the tuning-fork audio cue; unit shudders/vibrates</step>
+      <step n="2">Unit's aura drains from old faction color downward; new faction color rises from the ground</step>
+      <step n="3">Unit fights for the converter for 15s; faint after-image in old color fades over the duration</step>
+      <step n="4">On expiry, the converted unit is removed from the field</step>
+    </mainflow>
+    <postcondition>Temporary allegiance flip resolved; extension cap 9s total enforced</postcondition>
+  </usecase>
+
+  <usecase id="UC-05" name="Ascend Unit">
+    <actor>System</actor>
+    <trigger>A unit survives 30s on the field</trigger>
+    <mainflow>
+      <step n="1">System fires a vertical pillar of faction-neon light from the unit</step>
+      <step n="2">A billboarded eye-sigil appears above the unit (always camera-facing)</step>
+      <step n="3">Rising chime audio; unit gains +20% HP and +15% damage once</step>
+    </mainflow>
+    <postcondition>Unit is Ascended; cannot be converted thereafter</postcondition>
+  </usecase>
+
+  <usecase id="UC-06" name="Deploy Hero">
+    <actor>Player</actor>
+    <trigger>Player drags the hero card onto a lane</trigger>
+    <precondition>Player has enough Resonance (7-8)</precondition>
+    <mainflow>
+      <step n="1">System washes the field to black-and-white (~1.5-2s); all audio cuts to silence for half a beat</step>
+      <step n="2">Short cutscene: hero revealed, hero's faction neon the only color in frame</step>
+      <step n="3">Hero lands with deep impact audio; Center Node pulses in hero's faction color</step>
+      <step n="4">Color and battle resume</step>
+    </mainflow>
+    <postcondition>Hero is live on the lane</postcondition>
+  </usecase>
+
+  <usecase id="UC-07" name="Resolve Victory">
+    <actor>System</actor>
+    <trigger>Enemy anchor destroyed (or timer expires with player ahead)</trigger>
+    <mainflow>
+      <step n="1">Loser's faction color drains from the arena</step>
+      <step n="2">Winner's faction color floods the arena; graphics shift to winner's field representation</step>
+      <step n="3">Enemy anchor shatters (not building-collapse)</step>
+      <step n="4">Winner's faction motif swells in audio</step>
+    </mainflow>
+    <postcondition>Victory screen; rewards granted</postcondition>
+  </usecase>
+
+  <usecase id="UC-08" name="Resolve Defeat">
+    <actor>System</actor>
+    <trigger>Player's anchor destroyed (or timer expires behind)</trigger>
+    <mainflow>
+      <step n="1">Same choreography as UC-07 from the losing side: player color drains, enemy floods, player anchor shatters</step>
+    </mainflow>
+    <postcondition>Defeat screen; consolation rewards granted</postcondition>
+  </usecase>
+
+  <usecase id="UC-09" name="Contest Center Node">
+    <actor>System</actor>
+    <trigger>Units from one faction hold the Center Node uncontested</trigger>
+    <mainflow>
+      <step n="1">Node's glow/shimmer transitions to the holder's faction neon color</step>
+      <step n="2">Node bonus (TBD) applies while held</step>
+    </mainflow>
+    <postcondition>Node control readable at a glance</postcondition>
+  </usecase>
+
+  <usecase id="UC-10" name="Open Scroll">
+    <actor>Player</actor>
+    <trigger>Player selects a scroll in the Mythic Forge</trigger>
+    <mainflow>
+      <step n="1">Scroll floats into the forge and unfurls mid-air</step>
+      <step n="2">Forge fire flares; flame color reveals rarity (dim blue-gray common / bright blue rare / purple epic / white-gold legendary)</step>
+      <step n="3">Card materializes from the flame, back-first, then flips to reveal the unit</step>
+      <step n="4">New unit: anvil-strike flash and ring. Duplicate: card melts into embers flowing to the owned card (see UC-11)</step>
+    </mainflow>
+    <postcondition>Card added to collection</postcondition>
+  </usecase>
+
+  <usecase id="UC-11" name="Level Unit">
+    <actor>Player</actor>
+    <trigger>Duplicate card acquired (via UC-10)</trigger>
+    <mainflow>
+      <step n="1">Duplicate melts into embers in the forge fire</step>
+      <step n="2">Embers flow into the owned card; level increases with stat gains</step>
+    </mainflow>
+    <postcondition>Unit leveled; collection updated</postcondition>
+  </usecase>
+
+  <usecase id="UC-12" name="Build Deck">
+    <actor>Player</actor>
+    <trigger>Player opens deck builder in the Mythic Forge</trigger>
+    <precondition>Faction selected</precondition>
+    <mainflow>
+      <step n="1">Player assembles 9-10 cards: base units + 1 hero + 1-2 spells + mid-tier troops</step>
+      <step n="2">System validates deck composition rules</step>
+    </mainflow>
+    <postcondition>Deck saved; available for matchmaking</postcondition>
+  </usecase>
+
+  <usecase id="UC-13" name="Select Faction">
+    <actor>Player</actor>
+    <trigger>Player opens faction select in the Mythic Forge</trigger>
+    <mainflow>
+      <step n="1">System presents the four factions with sigils, taglines, and color identity</step>
+      <step n="2">Player selects a faction; forge ambience shifts to that faction's neon</step>
+    </mainflow>
+    <postcondition>Faction locked for deck building and matchmaking</postcondition>
+  </usecase>
+
+</usecases>
